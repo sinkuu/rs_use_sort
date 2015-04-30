@@ -46,7 +46,7 @@ fn format_uses<R: BufRead, W: Write>(input: &mut R, output: &mut W) {
             else { (Privacy::Private, None) }
         };
         if let Some(idx) = idx {
-            let mut path: Vec<String> = us[idx..].split("::").map(|s| s.trim_matches(' ').to_string())
+            let mut path: Vec<String> = us[idx..].split("::").map(|s| s.trim_matches(' ').to_owned())
                 .collect();
             if path[path.len() - 1].as_bytes()[0] == b'{' ||
                 path[path.len() - 1].chars().next().unwrap().is_uppercase() {
@@ -61,10 +61,10 @@ fn format_uses<R: BufRead, W: Write>(input: &mut R, output: &mut W) {
                 if uses.contains_key(&key) {
                     let mut entry = uses.get_mut(&key).unwrap();
                     for e in last.into_iter() {
-                        entry.insert(e.to_string());
+                        entry.insert(e.to_owned());
                     }
                 } else {
-                    uses.insert(key, last.into_iter().map(|s| s.to_string()).collect());
+                    uses.insert(key, last.into_iter().map(|s| s.to_owned()).collect());
                 }
             } else {
                 let key = (p, path);
